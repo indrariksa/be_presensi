@@ -87,14 +87,3 @@ func TestGetAllKaryawanFromStatus(t *testing.T) {
 	data := GetAllPresensiFromStatus(checkin, MongoConn, "presensi")
 	fmt.Println(data)
 }
-
-//func TestGetKaryawanFromName(t *testing.T) {
-//	namaewa := "DPR"
-//	biodata := GetKaryawanFromName(namaewa)
-//	fmt.Println(biodata)
-//}
-
-//func TestGetPresensi(t *testing.T) {
-//	ps := GetPresensiCurrentMonth(Ulbimongoconn)
-//	fmt.Print(ps)
-//}
