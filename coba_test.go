@@ -27,17 +27,17 @@ func TestInsertPresensi(t *testing.T) {
 
 	long := 98.345345
 	lat := 123.561651
-	lokasi := "Hawai"
+	lokasi := "New York"
 	phonenumber := "6811110023231"
 	checkin := "masuk"
 	biodata := Karyawan{
-		Nama:        "Parhan",
+		Nama:        "George",
 		PhoneNumber: "6284564562",
-		Jabatan:     "DPR",
+		Jabatan:     "Rakyat",
 		Jam_kerja:   []JamKerja{jamKerja1, jamKerja2},
 		Hari_kerja:  []string{"Senin", "Selasa"},
 	}
-	hasil := InsertPresensi(long, lat, lokasi, phonenumber, checkin, biodata)
+	hasil := InsertPresensi(MongoConn, long, lat, lokasi, phonenumber, checkin, biodata)
 	fmt.Println(hasil)
 }
 
@@ -72,14 +72,20 @@ func TestInsertPresensi(t *testing.T) {
 
 func TestGetKaryawanFromPhoneNumber(t *testing.T) {
 	phonenumber := "628123456789"
-	biodata := GetKaryawanFromPhoneNumber(phonenumber)
+	biodata := GetKaryawanFromPhoneNumber(phonenumber, MongoConn, "presensi")
 	fmt.Println(biodata)
 }
 
 func TestGetKaryawanFromStatus(t *testing.T) {
 	checkin := "masuk"
-	biodata := GetKaryawanFromStatus(checkin)
+	biodata := GetPresensiFromStatus(checkin, MongoConn, "presensi")
 	fmt.Println(biodata)
+}
+
+func TestGetAllKaryawanFromStatus(t *testing.T) {
+	checkin := "masuk"
+	data := GetAllPresensiFromStatus(checkin, MongoConn, "presensi")
+	fmt.Println(data)
 }
 
 //func TestGetKaryawanFromName(t *testing.T) {
