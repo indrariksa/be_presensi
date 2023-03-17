@@ -1,9 +1,10 @@
-package NPM
+package module
 
 import (
 	"context"
 	"fmt"
 	"github.com/aiteung/atdb"
+	"github.com/indrariksa/be_presensi/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -28,8 +29,8 @@ func InsertOneDoc(db *mongo.Database, collection string, doc interface{}) (inser
 	return insertResult.InsertedID
 }
 
-func InsertPresensi(db *mongo.Database, long float64, lat float64, lokasi string, phonenumber string, checkin string, biodata Karyawan) (InsertedID interface{}) {
-	var presensi Presensi
+func InsertPresensi(db *mongo.Database, long float64, lat float64, lokasi string, phonenumber string, checkin string, biodata model.Karyawan) (InsertedID interface{}) {
+	var presensi model.Presensi
 	presensi.Latitude = long
 	presensi.Longitude = lat
 	presensi.Location = lokasi
@@ -40,8 +41,8 @@ func InsertPresensi(db *mongo.Database, long float64, lat float64, lokasi string
 	return InsertOneDoc(db, "presensi", presensi)
 }
 
-func InsertKaryawan(db *mongo.Database, nama string, phone_number string, jabatan string, jam_kerja []JamKerja, hari_kerja []string) (InsertedID interface{}) {
-	var karyawan Karyawan
+func InsertKaryawan(db *mongo.Database, nama string, phone_number string, jabatan string, jam_kerja []model.JamKerja, hari_kerja []string) (InsertedID interface{}) {
+	var karyawan model.Karyawan
 	karyawan.Nama = nama
 	karyawan.PhoneNumber = phone_number
 	karyawan.Jabatan = jabatan
@@ -50,7 +51,7 @@ func InsertKaryawan(db *mongo.Database, nama string, phone_number string, jabata
 	return InsertOneDoc(db, "karyawan", karyawan)
 }
 
-func GetKaryawanFromPhoneNumber(phone_number string, db *mongo.Database, col string) (staf Presensi) {
+func GetKaryawanFromPhoneNumber(phone_number string, db *mongo.Database, col string) (staf model.Presensi) {
 	karyawan := db.Collection(col)
 	filter := bson.M{"phone_number": phone_number}
 	err := karyawan.FindOne(context.TODO(), filter).Decode(&staf)
@@ -60,7 +61,7 @@ func GetKaryawanFromPhoneNumber(phone_number string, db *mongo.Database, col str
 	return staf
 }
 
-func GetKaryawanFromName(jabatan string, db *mongo.Database, col string) (staf Presensi) {
+func GetKaryawanFromName(jabatan string, db *mongo.Database, col string) (staf model.Presensi) {
 	nm_karyawan := db.Collection(col)
 	filter := bson.M{"biodata.jabatan": jabatan}
 	err := nm_karyawan.FindOne(context.TODO(), filter).Decode(&staf)
@@ -70,7 +71,7 @@ func GetKaryawanFromName(jabatan string, db *mongo.Database, col string) (staf P
 	return staf
 }
 
-func GetPresensiFromStatus(checkin string, db *mongo.Database, col string) (data Presensi) {
+func GetPresensiFromStatus(checkin string, db *mongo.Database, col string) (data model.Presensi) {
 	karyawan := db.Collection(col)
 	filter := bson.M{"checkin": checkin}
 	err := karyawan.FindOne(context.TODO(), filter).Decode(&data)
@@ -80,7 +81,7 @@ func GetPresensiFromStatus(checkin string, db *mongo.Database, col string) (data
 	return data
 }
 
-func GetAllPresensiFromStatus(checkin string, db *mongo.Database, col string) (data []Presensi) {
+func GetAllPresensiFromStatus(checkin string, db *mongo.Database, col string) (data []model.Presensi) {
 	karyawan := db.Collection(col)
 	filter := bson.M{"checkin": checkin}
 	cursor, err := karyawan.Find(context.TODO(), filter)

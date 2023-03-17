@@ -2,11 +2,13 @@ package NPM
 
 import (
 	"fmt"
+	"github.com/indrariksa/be_presensi/model"
+	"github.com/indrariksa/be_presensi/module"
 	"testing"
 )
 
 func TestInsertPresensi(t *testing.T) {
-	var jamKerja1 = JamKerja{
+	var jamKerja1 = model.JamKerja{
 		Durasi:     8,
 		Jam_masuk:  "08:00",
 		Jam_keluar: "16:00",
@@ -15,7 +17,7 @@ func TestInsertPresensi(t *testing.T) {
 		Shift:      1,
 		Piket_tim:  "Piket A",
 	}
-	var jamKerja2 = JamKerja{
+	var jamKerja2 = model.JamKerja{
 		Durasi:     8,
 		Jam_masuk:  "09:00",
 		Jam_keluar: "17:00",
@@ -30,14 +32,14 @@ func TestInsertPresensi(t *testing.T) {
 	lokasi := "New York"
 	phonenumber := "6811110023231"
 	checkin := "masuk"
-	biodata := Karyawan{
+	biodata := model.Karyawan{
 		Nama:        "George",
 		PhoneNumber: "6284564562",
 		Jabatan:     "Rakyat",
-		Jam_kerja:   []JamKerja{jamKerja1, jamKerja2},
+		Jam_kerja:   []model.JamKerja{jamKerja1, jamKerja2},
 		Hari_kerja:  []string{"Senin", "Selasa"},
 	}
-	hasil := InsertPresensi(MongoConn, long, lat, lokasi, phonenumber, checkin, biodata)
+	hasil := module.InsertPresensi(module.MongoConn, long, lat, lokasi, phonenumber, checkin, biodata)
 	fmt.Println(hasil)
 }
 
@@ -72,18 +74,18 @@ func TestInsertPresensi(t *testing.T) {
 
 func TestGetKaryawanFromPhoneNumber(t *testing.T) {
 	phonenumber := "628123456789"
-	biodata := GetKaryawanFromPhoneNumber(phonenumber, MongoConn, "presensi")
+	biodata := module.GetKaryawanFromPhoneNumber(phonenumber, module.MongoConn, "presensi")
 	fmt.Println(biodata)
 }
 
 func TestGetKaryawanFromStatus(t *testing.T) {
 	checkin := "masuk"
-	biodata := GetPresensiFromStatus(checkin, MongoConn, "presensi")
+	biodata := module.GetPresensiFromStatus(checkin, module.MongoConn, "presensi")
 	fmt.Println(biodata)
 }
 
 func TestGetAllKaryawanFromStatus(t *testing.T) {
 	checkin := "masuk"
-	data := GetAllPresensiFromStatus(checkin, MongoConn, "presensi")
+	data := module.GetAllPresensiFromStatus(checkin, module.MongoConn, "presensi")
 	fmt.Println(data)
 }

@@ -2,10 +2,12 @@ module github.com/indrariksa/be_presensi
 
 go 1.20
 
-require go.mongodb.org/mongo-driver v1.11.2
+require (
+	github.com/aiteung/atdb v0.0.7
+	go.mongodb.org/mongo-driver v1.11.2
+)
 
 require (
-	github.com/aiteung/atdb v0.0.7 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/golang-sql/civil v0.0.0-20190719163853-cb61b32ac6fe // indirect
 	github.com/golang-sql/sqlexp v0.1.0 // indirect
