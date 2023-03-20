@@ -29,7 +29,7 @@ func InsertOneDoc(db *mongo.Database, collection string, doc interface{}) (inser
 	return insertResult.InsertedID
 }
 
-func InsertPresensi(db *mongo.Database, long float64, lat float64, lokasi string, phonenumber string, checkin string, biodata model.Karyawan) (InsertedID interface{}) {
+func InsertPresensiOld(db *mongo.Database, long float64, lat float64, lokasi string, phonenumber string, checkin string, biodata model.Karyawan) (InsertedID interface{}) {
 	var presensi model.Presensi
 	presensi.Latitude = long
 	presensi.Longitude = lat
@@ -39,6 +39,18 @@ func InsertPresensi(db *mongo.Database, long float64, lat float64, lokasi string
 	presensi.Checkin = checkin
 	presensi.Biodata = biodata
 	return InsertOneDoc(db, "presensi", presensi)
+}
+
+func InsertPresensi(db *mongo.Database, col string, long float64, lat float64, lokasi string, phonenumber string, checkin string, biodata model.Karyawan) (InsertedID interface{}) {
+	var presensi model.Presensi
+	presensi.Latitude = long
+	presensi.Longitude = lat
+	presensi.Location = lokasi
+	presensi.Phone_number = phonenumber
+	presensi.Datetime = primitive.NewDateTimeFromTime(time.Now().UTC())
+	presensi.Checkin = checkin
+	presensi.Biodata = biodata
+	return InsertOneDoc(db, col, presensi)
 }
 
 func InsertKaryawan(db *mongo.Database, nama string, phone_number string, jabatan string, jam_kerja []model.JamKerja, hari_kerja []string) (InsertedID interface{}) {

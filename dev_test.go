@@ -33,13 +33,13 @@ func TestInsertPresensi(t *testing.T) {
 	phonenumber := "6811110023231"
 	checkin := "masuk"
 	biodata := model.Karyawan{
-		Nama:        "George",
+		Nama:        "George Best",
 		PhoneNumber: "6284564562",
 		Jabatan:     "Rakyat",
 		Jam_kerja:   []model.JamKerja{jamKerja1, jamKerja2},
 		Hari_kerja:  []string{"Senin", "Selasa"},
 	}
-	hasil := module.InsertPresensi(module.MongoConn, long, lat, lokasi, phonenumber, checkin, biodata)
+	hasil := module.InsertPresensi(module.MongoConn, "presensi", long, lat, lokasi, phonenumber, checkin, biodata)
 	fmt.Println(hasil)
 }
 
