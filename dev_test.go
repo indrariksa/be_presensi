@@ -72,12 +72,6 @@ func TestInsertPresensi(t *testing.T) {
 //	fmt.Println(hasil)
 //}
 
-func TestGetKaryawanFromPhoneNumber(t *testing.T) {
-	phonenumber := "628123456789"
-	biodata := module.GetKaryawanFromPhoneNumber(phonenumber, module.MongoConn, "presensi")
-	fmt.Println(biodata)
-}
-
 func TestGetKaryawanFromStatus(t *testing.T) {
 	checkin := "masuk"
 	biodata := module.GetPresensiFromStatus(checkin, module.MongoConn, "presensi")
@@ -88,6 +82,15 @@ func TestGetAllKaryawanFromStatus(t *testing.T) {
 	checkin := "masuk"
 	data := module.GetAllPresensiFromStatus(checkin, module.MongoConn, "presensi")
 	fmt.Println(data)
+}
+
+func TestGetKaryawanFromPhoneNumber(t *testing.T) {
+	phonenumber := "628122221814"
+	biodata, err := module.GetKaryawanFromPhoneNumber(phonenumber, module.MongoConn, "presensi")
+	if err != nil {
+		t.Fatalf("error calling GetKaryawanFromPhoneNumber: %v", err)
+	}
+	fmt.Println(biodata)
 }
 
 func TestGetAll(t *testing.T) {

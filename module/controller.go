@@ -2,6 +2,7 @@ package module
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/aiteung/atdb"
 	"github.com/indrariksa/be_presensi/model"
@@ -63,14 +64,17 @@ func InsertKaryawan(db *mongo.Database, nama string, phone_number string, jabata
 	return InsertOneDoc(db, "karyawan", karyawan)
 }
 
-func GetKaryawanFromPhoneNumber(phone_number string, db *mongo.Database, col string) (staf model.Presensi) {
+func GetKaryawanFromPhoneNumber(phone_number string, db *mongo.Database, col string) (staf model.Presensi, errs error) {
 	karyawan := db.Collection(col)
 	filter := bson.M{"phone_number": phone_number}
 	err := karyawan.FindOne(context.TODO(), filter).Decode(&staf)
 	if err != nil {
-		fmt.Printf("getKaryawanFromPhoneNumber: %v\n", err)
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return staf, fmt.Errorf("no data found for phone number %s", phone_number)
+		}
+		return staf, fmt.Errorf("error retrieving data for phone number %s: %s", phone_number, err.Error())
 	}
-	return staf
+	return staf, nil
 }
 
 func GetKaryawanFromName(jabatan string, db *mongo.Database, col string) (staf model.Presensi) {
