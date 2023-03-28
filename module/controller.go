@@ -64,6 +64,30 @@ func InsertKaryawan(db *mongo.Database, nama string, phone_number string, jabata
 	return InsertOneDoc(db, "karyawan", karyawan)
 }
 
+func UpdatePresensi(db *mongo.Database, col string, id primitive.ObjectID, long float64, lat float64, lokasi string, phonenumber string, checkin string, biodata model.Karyawan) (err error) {
+	filter := bson.M{"_id": id}
+	update := bson.M{
+		"$set": bson.M{
+			"longitude":    long,
+			"latitude":     lat,
+			"location":     lokasi,
+			"phone_number": phonenumber,
+			"checkin":      checkin,
+			"biodata":      biodata,
+		},
+	}
+	result, err := db.Collection(col).UpdateOne(context.Background(), filter, update)
+	if err != nil {
+		fmt.Printf("UpdatePresensi: %v\n", err)
+		return
+	}
+	if result.ModifiedCount == 0 {
+		err = errors.New("No document found with the specified ID")
+		return
+	}
+	return nil
+}
+
 func GetKaryawanFromPhoneNumber(phone_number string, db *mongo.Database, col string) (staf model.Presensi, errs error) {
 	karyawan := db.Collection(col)
 	filter := bson.M{"phone_number": phone_number}
