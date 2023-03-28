@@ -210,6 +210,19 @@ func TestGetKaryawanFromPhoneNumber(t *testing.T) {
 	fmt.Println(biodata)
 }
 
+func TestGetPresensiFromID(t *testing.T) {
+	id := "6422e300f590e691c91082cb"
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		t.Fatalf("error converting id to ObjectID: %v", err)
+	}
+	biodata, err := module.GetPresensiFromID(objectID, module.MongoConn, "presensi")
+	if err != nil {
+		t.Fatalf("error calling GetPresensiFromID: %v", err)
+	}
+	fmt.Println(biodata)
+}
+
 func TestGetAll(t *testing.T) {
 	data := module.GetAllPresensi(module.MongoConn, "presensi")
 	fmt.Println(data)

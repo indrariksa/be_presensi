@@ -95,6 +95,19 @@ func UpdatePresensi(db *mongo.Database, col string, id primitive.ObjectID, long 
 	return nil
 }
 
+func GetPresensiFromID(_id primitive.ObjectID, db *mongo.Database, col string) (staf model.Presensi, errs error) {
+	karyawan := db.Collection(col)
+	filter := bson.M{"_id": _id}
+	err := karyawan.FindOne(context.TODO(), filter).Decode(&staf)
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return staf, fmt.Errorf("no data found for ID %s", _id)
+		}
+		return staf, fmt.Errorf("error retrieving data for ID %s: %s", _id, err.Error())
+	}
+	return staf, nil
+}
+
 func GetKaryawanFromPhoneNumber(phone_number string, db *mongo.Database, col string) (staf model.Presensi, errs error) {
 	karyawan := db.Collection(col)
 	filter := bson.M{"phone_number": phone_number}
