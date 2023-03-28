@@ -30,28 +30,35 @@ func InsertOneDoc(db *mongo.Database, collection string, doc interface{}) (inser
 	return insertResult.InsertedID
 }
 
-func InsertPresensiOld(db *mongo.Database, long float64, lat float64, lokasi string, phonenumber string, checkin string, biodata model.Karyawan) (InsertedID interface{}) {
-	var presensi model.Presensi
-	presensi.Latitude = long
-	presensi.Longitude = lat
-	presensi.Location = lokasi
-	presensi.Phone_number = phonenumber
-	presensi.Datetime = primitive.NewDateTimeFromTime(time.Now().UTC())
-	presensi.Checkin = checkin
-	presensi.Biodata = biodata
-	return InsertOneDoc(db, "presensi", presensi)
-}
+//func InsertPresensi(db *mongo.Database, col string, long float64, lat float64, lokasi string, phonenumber string, checkin string, biodata model.Karyawan) (InsertedID interface{}) {
+//	var presensi model.Presensi
+//	presensi.Latitude = long
+//	presensi.Longitude = lat
+//	presensi.Location = lokasi
+//	presensi.Phone_number = phonenumber
+//	presensi.Datetime = primitive.NewDateTimeFromTime(time.Now().UTC())
+//	presensi.Checkin = checkin
+//	presensi.Biodata = biodata
+//	return InsertOneDoc(db, col, presensi)
+//}
 
-func InsertPresensi(db *mongo.Database, col string, long float64, lat float64, lokasi string, phonenumber string, checkin string, biodata model.Karyawan) (InsertedID interface{}) {
-	var presensi model.Presensi
-	presensi.Latitude = long
-	presensi.Longitude = lat
-	presensi.Location = lokasi
-	presensi.Phone_number = phonenumber
-	presensi.Datetime = primitive.NewDateTimeFromTime(time.Now().UTC())
-	presensi.Checkin = checkin
-	presensi.Biodata = biodata
-	return InsertOneDoc(db, col, presensi)
+func InsertPresensi(db *mongo.Database, col string, long float64, lat float64, lokasi string, phonenumber string, checkin string, biodata model.Karyawan) (insertedID primitive.ObjectID, err error) {
+	presensi := bson.M{
+		"longitude":    long,
+		"latitude":     lat,
+		"location":     lokasi,
+		"phone_number": phonenumber,
+		"datetime":     primitive.NewDateTimeFromTime(time.Now().UTC()),
+		"checkin":      checkin,
+		"biodata":      biodata,
+	}
+	result, err := db.Collection(col).InsertOne(context.Background(), presensi)
+	if err != nil {
+		fmt.Printf("InsertPresensi: %v\n", err)
+		return
+	}
+	insertedID = result.InsertedID.(primitive.ObjectID)
+	return insertedID, nil
 }
 
 func InsertKaryawan(db *mongo.Database, nama string, phone_number string, jabatan string, jam_kerja []model.JamKerja, hari_kerja []string) (InsertedID interface{}) {
