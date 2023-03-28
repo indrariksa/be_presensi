@@ -106,3 +106,17 @@ func GetAllPresensiFromStatus(checkin string, db *mongo.Database, col string) (d
 	}
 	return
 }
+
+func GetAllPresensi(db *mongo.Database, col string) (data []model.Presensi) {
+	karyawan := db.Collection(col)
+	filter := bson.M{}
+	cursor, err := karyawan.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetALLData :", err)
+	}
+	err = cursor.All(context.TODO(), &data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return
+}

@@ -89,3 +89,8 @@ func TestGetAllKaryawanFromStatus(t *testing.T) {
 	data := module.GetAllPresensiFromStatus(checkin, module.MongoConn, "presensi")
 	fmt.Println(data)
 }
+
+func TestGetAll(t *testing.T) {
+	data := module.GetAllPresensi(module.MongoConn, "presensi")
+	fmt.Println(data)
+}
