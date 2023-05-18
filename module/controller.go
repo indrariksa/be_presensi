@@ -89,7 +89,7 @@ func UpdatePresensi(db *mongo.Database, col string, id primitive.ObjectID, long 
 		return
 	}
 	if result.ModifiedCount == 0 {
-		err = errors.New("No document found with the specified ID")
+		err = errors.New("No data has been changed with the specified ID")
 		return
 	}
 	return nil
@@ -167,4 +167,16 @@ func GetAllPresensi(db *mongo.Database, col string) (data []model.Presensi) {
 		fmt.Println(err)
 	}
 	return
+}
+
+func DeletePresensiByID(_id primitive.ObjectID, db *mongo.Database, col string) error {
+	karyawan := db.Collection(col)
+	filter := bson.M{"_id": _id}
+
+	_, err := karyawan.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		return fmt.Errorf("error deleting data for ID %s: %s", _id, err.Error())
+	}
+
+	return nil
 }
