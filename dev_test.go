@@ -229,7 +229,7 @@ func TestGetAll(t *testing.T) {
 }
 
 func TestDeletePresensiByID(t *testing.T) {
-	id := "6465caae12bfd8232612e651" // ID data yang ingin dihapus
+	id := "646611fecb7c6963b9e2baad" // ID data yang ingin dihapus
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		t.Fatalf("error converting id to ObjectID: %v", err)
