@@ -247,13 +247,18 @@ func TestDeletePresensiByID(t *testing.T) {
 	}
 }
 
+func TestGetAllKontak(t *testing.T) {
+	data := module.GetAllContact(module.MongoConn, "kontak")
+	fmt.Println(data)
+}
+
 func TestInsertKontak(t *testing.T) {
 	nama_kontak := "testing"
 	nomor_hp := "6811110023231"
 	alamat := "New York"
 	keterangan := "6811110023231"
 
-	insertedID, err := module.InsertKontak(module.MongoConn, "presensi", nama_kontak, nomor_hp, alamat, keterangan)
+	insertedID, err := module.InsertKontak(module.MongoConn, "kontak", nama_kontak, nomor_hp, alamat, keterangan)
 	if err != nil {
 		t.Errorf("Error inserting data: %v", err)
 	}

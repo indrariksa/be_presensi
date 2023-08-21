@@ -25,10 +25,10 @@ func GetAllContact(db *mongo.Database, col string) (data []model.Kontak) {
 
 func InsertKontak(db *mongo.Database, col string, nmkontak string, nmrkontak string, almt string, ktrngn string) (insertedID primitive.ObjectID, err error) {
 	presensi := bson.M{
-		"namakontak": nmkontak,
-		"nomorhp":    nmrkontak,
-		"alamat":     almt,
-		"keterangan": ktrngn,
+		"nama_kontak": nmkontak,
+		"nomor_hp":    nmrkontak,
+		"alamat":      almt,
+		"keterangan":  ktrngn,
 	}
 	result, err := db.Collection(col).InsertOne(context.Background(), presensi)
 	if err != nil {

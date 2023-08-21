@@ -47,9 +47,9 @@ type Geometry struct {
 }
 
 type Kontak struct {
-	ID          primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
-	Nama_kontak string             `bson:"nama_kontak,omitempty" json:"nama_kontak,omitempty"`
-	Nomor_hp    string             `bson:"nomor_hp,omitempty" json:"nomor_hp,omitempty"`
-	Alamat      string             `bson:"alamat,omitempty" json:"alamat,omitempty"`
-	Keterangan  string             `bson:"keterangan,omitempty" json:"keterangan,omitempty"`
+	ID         primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
+	NamaKontak string             `bson:"nama_kontak" json:"nama_kontak"`
+	NomorHp    string             `bson:"nomor_hp" json:"nomor_hp"`
+	Alamat     string             `bson:"alamat,omitempty" json:"alamat,omitempty"`
+	Keterangan string             `bson:"keterangan,omitempty" json:"keterangan,omitempty"`
 }
