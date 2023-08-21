@@ -72,7 +72,7 @@ func TestInsertPresensi(t *testing.T) {
 	phonenumber := "6811110023231"
 	checkin := "masuk"
 	biodata := model.Karyawan{
-		Nama:        "George Best",
+		Nama:        "Kindi Herdiansyah",
 		PhoneNumber: "6284564562",
 		Jabatan:     "Rakyat",
 		Jam_kerja:   []model.JamKerja{jamKerja1, jamKerja2},
@@ -245,4 +245,17 @@ func TestDeletePresensiByID(t *testing.T) {
 	if err == nil {
 		t.Fatalf("expected data to be deleted, but it still exists")
 	}
+}
+
+func TestInsertKontak(t *testing.T) {
+	nama_kontak := "testing"
+	nomor_hp := "6811110023231"
+	alamat := "New York"
+	keterangan := "6811110023231"
+
+	insertedID, err := module.InsertKontak(module.MongoConn, "presensi", nama_kontak, nomor_hp, alamat, keterangan)
+	if err != nil {
+		t.Errorf("Error inserting data: %v", err)
+	}
+	fmt.Printf("Data berhasil disimpan dengan id %s", insertedID.Hex())
 }

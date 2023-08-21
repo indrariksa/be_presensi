@@ -45,3 +45,11 @@ type Geometry struct {
 	Type        string      `json:"type" bson:"type"`
 	Coordinates interface{} `json:"coordinates" bson:"coordinates"`
 }
+
+type Kontak struct {
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
+	Nama_kontak string             `bson:"nama_kontak,omitempty" json:"nama_kontak,omitempty"`
+	nomor_hp    string             `bson:"nomor_hp,omitempty" json:"nomor_hp,omitempty"`
+	Alamat      string             `bson:"alamat,omitempty" json:"alamat,omitempty"`
+	Keterangan  string             `bson:"keterangan,omitempty" json:"keterangan,omitempty"`
+}
