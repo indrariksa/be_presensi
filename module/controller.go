@@ -179,7 +179,7 @@ func DeletePresensiByID(_id primitive.ObjectID, db *mongo.Database, col string) 
 	}
 
 	if result.DeletedCount == 0 {
-		return fmt.Errorf("data with ID %s not found", _id)
+		return fmt.Errorf("data with specific ID %s not found", _id)
 	}
 
 	return nil
