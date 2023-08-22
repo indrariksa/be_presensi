@@ -160,6 +160,46 @@ func TestUpdatePresensi(t *testing.T) {
 	}
 }
 
+func TestUpdateKontak(t *testing.T) {
+	col := "kontak"
+
+	// Define a test document
+	doc := model.Kontak{
+		ID:         primitive.NewObjectID(),
+		NamaKontak: "testing",
+		NomorHp:    "6811110023231",
+		Alamat:     "New York",
+		Keterangan: "6811110023231",
+	}
+
+	// Insert the test document into the collection
+	if _, err := module.MongoConn.Collection(col).InsertOne(context.Background(), doc); err != nil {
+		t.Fatalf("Failed to insert test document: %v", err)
+	}
+
+	// Define the fields to update
+	nama_kontak := "testing"
+	nomor_hp := "6811110023231"
+	alamat := "New York"
+	keterangan := "6811110023222"
+
+	// Call UpdatePresensi with the test document ID and updated fields
+	if err := module.UpdateKontak(module.MongoConn, col, doc.ID, nama_kontak, nomor_hp, alamat, keterangan); err != nil {
+		t.Fatalf("UpdateKontak failed: %v", err)
+	}
+
+	// Retrieve the updated document from the collection
+	var updatedDoc model.Kontak
+	if err := module.MongoConn.Collection(col).FindOne(context.Background(), bson.M{"_id": doc.ID}).Decode(&updatedDoc); err != nil {
+		t.Fatalf("Failed to retrieve updated document: %v", err)
+	}
+
+	// Verify that the document was updated as expected
+	if updatedDoc.NamaKontak != nama_kontak || updatedDoc.NomorHp != nomor_hp || updatedDoc.Alamat != alamat || updatedDoc.Keterangan != keterangan {
+		t.Fatalf("Document was not updated as expected")
+	}
+}
+
 //func TestInsertKaryawan(t *testing.T) {
 //	var jamKerja1 = JamKerja{
 //		Durasi:     8,

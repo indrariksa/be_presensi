@@ -2,6 +2,7 @@ package module
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/indrariksa/be_presensi/model"
 	"go.mongodb.org/mongo-driver/bson"
@@ -43,19 +44,20 @@ func UpdateKontak(db *mongo.Database, col string, id primitive.ObjectID, nmkonta
 	filter := bson.M{"_id": id}
 	update := bson.M{
 		"$set": bson.M{
-			"namakontak": nmkontak,
-			"nomorhp":    nmrkontak,
-			"alamat":     almt,
-			"keterangan": ktrngn,
+			"nama_kontak": nmkontak,
+			"nomor_hp":    nmrkontak,
+			"alamat":      almt,
+			"keterangan":  ktrngn,
 		},
 	}
 	result, err := db.Collection(col).UpdateOne(context.Background(), filter, update)
 	if err != nil {
-		fmt.Printf("Update Kontak: %v\n", err)
+		fmt.Printf("UpdateKontak: %v\n", err)
 		return
 	}
 	if result.ModifiedCount == 0 {
-		return fmt.Errorf("data with ID %s not found", id)
+		err = errors.New("No data has been changed with the specified ID")
+		return
 	}
 	return nil
 }
