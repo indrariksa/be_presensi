@@ -24,6 +24,19 @@ func GetAllContact(db *mongo.Database, col string) (data []model.Kontak) {
 	return
 }
 
+func GetKontakFromID(_id primitive.ObjectID, db *mongo.Database, col string) (kontak model.Kontak, errs error) {
+	contact := db.Collection(col)
+	filter := bson.M{"_id": _id}
+	err := contact.FindOne(context.TODO(), filter).Decode(&kontak)
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return kontak, fmt.Errorf("no data found for ID %s", _id)
+		}
+		return kontak, fmt.Errorf("error retrieving data for ID %s: %s", _id, err.Error())
+	}
+	return kontak, nil
+}
+
 func InsertKontak(db *mongo.Database, col string, nmkontak string, nmrkontak string, almt string, ktrngn string) (insertedID primitive.ObjectID, err error) {
 	presensi := bson.M{
 		"nama_kontak": nmkontak,
