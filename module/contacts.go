@@ -10,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func GetAllContacts(db *mongo.Database, col string) (data []model.Kontak) {
+func GetAllContacts(db *mongo.Database, col string) (data []model.Contact) {
 	kontak := db.Collection(col)
 	filter := bson.M{}
 	cursor, err := kontak.Find(context.TODO(), filter)
@@ -24,7 +24,7 @@ func GetAllContacts(db *mongo.Database, col string) (data []model.Kontak) {
 	return
 }
 
-func GetContactsFromID(_id primitive.ObjectID, db *mongo.Database, col string) (kontak model.Kontak, errs error) {
+func GetContactsFromID(_id primitive.ObjectID, db *mongo.Database, col string) (kontak model.Contact, errs error) {
 	contact := db.Collection(col)
 	filter := bson.M{"_id": _id}
 	err := contact.FindOne(context.TODO(), filter).Decode(&kontak)
