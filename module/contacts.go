@@ -51,14 +51,12 @@ func InsertContacts(db *mongo.Database, col, nmkontak, nmrkontak string) (insert
 	return insertedID, nil
 }
 
-func UpdateContacts(db *mongo.Database, col string, id primitive.ObjectID, nmkontak string, nmrkontak string, almt string, ktrngn string) (err error) {
+func UpdateContacts(db *mongo.Database, col string, id primitive.ObjectID, nmkontak, nmrkontak string) (err error) {
 	filter := bson.M{"_id": id}
 	update := bson.M{
 		"$set": bson.M{
 			"nama_kontak": nmkontak,
 			"nomor_hp":    nmrkontak,
-			"alamat":      almt,
-			"keterangan":  ktrngn,
 		},
 	}
 	result, err := db.Collection(col).UpdateOne(context.Background(), filter, update)
