@@ -53,3 +53,9 @@ type Kontak struct {
 	Alamat     string             `bson:"alamat,omitempty" json:"alamat,omitempty"`
 	Keterangan string             `bson:"keterangan,omitempty" json:"keterangan,omitempty"`
 }
+
+type Contact struct {
+	ID         primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
+	NamaKontak string             `bson:"nama_kontak" json:"nama_kontak"`
+	NomorHp    string             `bson:"nomor_hp" json:"nomor_hp"`
+}
