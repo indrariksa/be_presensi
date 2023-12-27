@@ -2,6 +2,8 @@ package module
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"github.com/indrariksa/be_presensi/model"
@@ -10,6 +12,19 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
 )
+
+func GenerateRandomString(length int) (string, error) {
+	randomBytes := make([]byte, length)
+
+	_, err := rand.Read(randomBytes)
+	if err != nil {
+		return "", err
+	}
+
+	randomString := base64.URLEncoding.EncodeToString(randomBytes)
+
+	return randomString, nil
+}
 
 func GetUserByUsername(username string, db *mongo.Database, col string) (user model.User, err error) {
 	usersCollection := db.Collection(col)
@@ -37,23 +52,27 @@ func VerifyPassword(user model.User, providedPassword string) (bool, error) {
 	return true, nil
 }
 
-// Implementasi fungsi login
-func Login(username, password string, db *mongo.Database, col string) (loggedIn bool, err error) {
+func Login(username, password string, db *mongo.Database, col string) (loggedIn bool, token string, err error) {
 	user, err := GetUserByUsername(username, db, col)
 	if err != nil {
-		return false, err
+		return false, "", err
 	}
 
 	passwordMatched, err := VerifyPassword(user, password)
 	if err != nil {
-		return false, err
+		return false, "", err
 	}
 
 	if !passwordMatched {
-		return false, fmt.Errorf("invalid password")
+		return false, "", fmt.Errorf("invalid password")
 	}
 
-	return true, nil
+	token, err = GenerateRandomString(26)
+	if err != nil {
+		return false, "", err
+	}
+
+	return true, token, nil
 }
 
 func CreateUser(db *mongo.Database, col string, username, password string) (insertedID primitive.ObjectID, err error) {
