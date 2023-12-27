@@ -38,22 +38,22 @@ func VerifyPassword(user model.User, providedPassword string) (bool, error) {
 }
 
 // Implementasi fungsi login
-func Login(username, password string, db *mongo.Database, col string) (loggedIn bool, userID primitive.ObjectID, err error) {
+func Login(username, password string, db *mongo.Database, col string) (loggedIn bool, err error) {
 	user, err := GetUserByUsername(username, db, col)
 	if err != nil {
-		return false, primitive.NilObjectID, err
+		return false, err
 	}
 
 	passwordMatched, err := VerifyPassword(user, password)
 	if err != nil {
-		return false, primitive.NilObjectID, err
+		return false, err
 	}
 
 	if !passwordMatched {
-		return false, primitive.NilObjectID, fmt.Errorf("invalid password")
+		return false, fmt.Errorf("invalid password")
 	}
 
-	return true, user.ID, nil
+	return true, nil
 }
 
 func CreateUser(db *mongo.Database, col string, username, password string) (insertedID primitive.ObjectID, err error) {

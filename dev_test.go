@@ -330,7 +330,7 @@ func TestLogin_Success(t *testing.T) {
 	password := "password" // Ganti dengan password yang sesuai dengan pengguna yang telah ada di database
 
 	// Memanggil fungsi login
-	loggedIn, _, err := module.Login(username, password, module.MongoConn, "users")
+	loggedIn, err := module.Login(username, password, module.MongoConn, "users")
 	if err != nil {
 		t.Errorf("Error logging in: %v", err)
 	}
@@ -347,7 +347,7 @@ func TestLogin_Failure(t *testing.T) {
 	password := "wrongpassword" // Ganti dengan password yang salah untuk pengguna yang mungkin tidak ada di database
 
 	// Memanggil fungsi login
-	loggedIn, _, err := module.Login(username, password, module.MongoConn, "users")
+	loggedIn, err := module.Login(username, password, module.MongoConn, "users")
 	if err != nil {
 		t.Errorf("Error logging in: %v", err)
 	}
