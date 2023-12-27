@@ -288,7 +288,7 @@ func TestDeletePresensiByID(t *testing.T) {
 }
 
 func TestGetAllKontak(t *testing.T) {
-	data := module.GetAllContact(module.MongoConn, "kontak")
+	data := module.GetAllContacts(module.MongoConn, "contacts")
 	fmt.Println(data)
 }
 
@@ -303,4 +303,57 @@ func TestInsertKontak(t *testing.T) {
 		t.Errorf("Error inserting data: %v", err)
 	}
 	fmt.Printf("Data berhasil disimpan dengan id %s", insertedID.Hex())
+}
+
+func TestCreateUser(t *testing.T) {
+	username := "admin"    // Ganti dengan username yang diinginkan
+	password := "admin123" // Ganti dengan password yang diinginkan
+
+	insertedID, err := module.CreateUser(module.MongoConn, "users", username, password)
+	if err != nil {
+		t.Errorf("Error creating user: %v", err)
+	}
+
+	// Verifikasi bahwa data pengguna telah berhasil dimasukkan
+	if insertedID.IsZero() {
+		t.Fatal("Invalid inserted user ID")
+	}
+
+	// Anda bisa menambahkan pengujian lainnya untuk memeriksa apakah pengguna berhasil disimpan di database
+	// Misalnya, Anda dapat mencoba mendapatkan pengguna menggunakan fungsi GetUserByUsername
+	// dan memeriksa apakah pengguna yang didapatkan sesuai dengan data yang dimasukkan sebelumnya.
+}
+
+func TestLogin_Success(t *testing.T) {
+	// Data pengguna yang akan digunakan untuk pengujian
+	username := "username" // Ganti dengan username yang ada di database
+	password := "password" // Ganti dengan password yang sesuai dengan pengguna yang telah ada di database
+
+	// Memanggil fungsi login
+	loggedIn, _, err := module.Login(username, password, module.MongoConn, "users")
+	if err != nil {
+		t.Errorf("Error logging in: %v", err)
+	}
+
+	// Verifikasi bahwa login berhasil dilakukan
+	if !loggedIn {
+		t.Error("Login should be successful but it failed")
+	}
+}
+
+func TestLogin_Failure(t *testing.T) {
+	// Data pengguna yang akan digunakan untuk pengujian
+	username := "username"      // Ganti dengan username yang mungkin tidak ada di database
+	password := "wrongpassword" // Ganti dengan password yang salah untuk pengguna yang mungkin tidak ada di database
+
+	// Memanggil fungsi login
+	loggedIn, _, err := module.Login(username, password, module.MongoConn, "users")
+	if err != nil {
+		t.Errorf("Error logging in: %v", err)
+	}
+
+	// Verifikasi bahwa login gagal dilakukan
+	if loggedIn {
+		t.Error("Login should fail but it succeeded")
+	}
 }

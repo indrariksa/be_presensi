@@ -59,3 +59,9 @@ type Contact struct {
 	NamaKontak string             `bson:"nama_kontak" json:"nama_kontak"`
 	NomorHp    string             `bson:"nomor_hp" json:"nomor_hp"`
 }
+
+type User struct {
+	ID       primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
+	Username string             `bson:"username" json:"username"`
+	Password string             `bson:"password" json:"password"`
+}
